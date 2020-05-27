@@ -1,3 +1,5 @@
+// value noise with cosine interpolation
+
 #pragma once
 
 #include <stdlib.h>
@@ -18,6 +20,8 @@ void noise_init(struct Noise* noise, int values_count) {
 }
 
 float noise_lookup(struct Noise* noise, float x) {
+    double _;
+    x = modf(x, &_);
     int n = noise->values_count;
     float pivot = x * n;
     int a = (int) pivot;
