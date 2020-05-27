@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "noise.h"
 #include "fbm.h"
 
@@ -12,13 +13,35 @@ char* BRAILLE[5][5] = {
 };
 
 int main(int argc, char** argv) {
-    int width = atoi(argv[1]);
-    int height = atoi(argv[2]);
-    int octaves = atoi(argv[3]);
-    float lacunarity = atof(argv[4]);
-    float gain = atof(argv[5]);
-    int noise_values_count = atoi(argv[6]);
-    int seed = atoi(argv[7]);
+    int width;
+    int height;
+    int octaves;
+    float lacunarity;
+    float gain;
+    int noise_values_count;
+    int seed;
+    if (argc == 1) {
+        srandom(time(NULL));
+        width = 40 + random() % 31;
+        height = 10 + random() % 31;
+        octaves = 2 + random() % 3;
+        lacunarity = ((float)(random() % 1000) / 1000.0) * 10.0;
+        gain = (float)(10 + random() % 71) / 100.0;
+        noise_values_count = 2 + random() % (width - 1);
+        seed = random();
+    } else if (argc == 8) {
+        width = atoi(argv[1]);
+        height = atoi(argv[2]);
+        octaves = atoi(argv[3]);
+        lacunarity = atof(argv[4]);
+        gain = atof(argv[5]);
+        noise_values_count = atoi(argv[6]);
+        seed = atoi(argv[7]);
+    } else {
+        printf("braillefbm <width> <height> <octaves> <lacunarity> <gain> <noise_values_count> <seed>\n");
+        return 1;
+    }
+    printf("./braillefbm %d %d %d %f %f %d %d\n", width, height, octaves, lacunarity, gain, noise_values_count, seed);
     srandom(seed);
     struct Noise noise;
     float noise_lookup_fn(float x) { return noise_lookup(&noise, x); }
@@ -48,4 +71,5 @@ int main(int argc, char** argv) {
         printf("\n");
     }
     noise_free(&noise);
+    return 0;
 }
