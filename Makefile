@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = -g -lm
+CFLAGS  = -std=c18 -pedantic -Werror -g -lm
 RM      = rm -f
 
 

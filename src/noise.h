@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <math.h>
 
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
+
 struct Noise {
     int values_count;
     float* values;
@@ -14,7 +18,7 @@ void noise_init(struct Noise* noise, int values_count) {
     noise->values_count = values_count;
     noise->values = malloc(values_count * sizeof(float));
     for (int i = 0; i < values_count; i++) {
-        float n = random() % 1000;
+        float n = rand() % 1000;
         noise->values[i] = n / 1000.0;
     }
 }
